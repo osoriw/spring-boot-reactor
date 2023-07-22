@@ -51,6 +51,26 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		names3.subscribe(name -> log.info(name), name -> log.error(name.getMessage()));
 		System.out.println("\n");
 
+		// Ejemplo 4: el evento onComplete
+		System.out.println("El evento onComplete:");
+		Flux<String> names4 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
+			if (name.isEmpty()) {
+				throw new RuntimeErrorException(null, "Names can't be empty.");
+			}
+
+			System.out.println(name);
+		});
+
+		names4.subscribe(name -> log.info(name), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+
+			}
+		});
+		System.out.println("\n");
+
 	}
 
 }
