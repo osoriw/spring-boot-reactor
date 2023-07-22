@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.osoriw.springboot.reactor.app.models.Usuario;
+
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
@@ -70,7 +72,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 
-		// Ejemplo 4: transformando los nombres a mayúsculas, después del método doOnNext:
+		// Ejemplo 4: transformando los nombres a mayúsculas, después del método
+		// doOnNext:
 		System.out.println("Transformando los nombres a mayúsculas, después del método doOnNext:");
 		Flux<String> names5 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
 			if (name.isEmpty()) {
@@ -81,6 +84,27 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		}).map(name -> name.toUpperCase());
 
 		names5.subscribe(name -> log.info(name), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
+
+		// Ejemplo 5: transformando los nombres a objetos tipo Usuario:
+		System.out.println("Transformando los nombres a objetos tipo Usuario:");
+		Flux<Usuario> users = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego")
+				.map(name -> new Usuario(name.toUpperCase(), null))
+				.doOnNext(user -> {
+					if (user.getName().isEmpty()) {
+						throw new RuntimeErrorException(null, "Names can't be empty.");
+					}
+
+					System.out.println(user.getName());
+				});
+
+		users.subscribe(user -> log.info(user.getName()), name -> log.error(name.getMessage()), new Runnable() {
 
 			@Override
 			public void run() {
