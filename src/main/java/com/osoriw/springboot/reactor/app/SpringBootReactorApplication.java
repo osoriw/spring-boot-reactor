@@ -66,7 +66,25 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 			@Override
 			public void run() {
 				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
 
+		// Ejemplo 4: transformando los nombres a mayúsculas, después del método doOnNext:
+		System.out.println("Transformando los nombres a mayúsculas, después del método doOnNext:");
+		Flux<String> names5 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
+			if (name.isEmpty()) {
+				throw new RuntimeErrorException(null, "Names can't be empty.");
+			}
+
+			System.out.println(name);
+		}).map(name -> name.toUpperCase());
+
+		names5.subscribe(name -> log.info(name), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
 			}
 		});
 		System.out.println("\n");
