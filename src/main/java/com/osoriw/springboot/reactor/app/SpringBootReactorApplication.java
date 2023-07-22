@@ -1,5 +1,7 @@
 package com.osoriw.springboot.reactor.app;
 
+import javax.management.RuntimeErrorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -35,6 +37,20 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		names2.subscribe(name -> log.info(name));
 		System.out.println("\n");
+
+		// Ejemplo 3: agregando control de excepciones
+		System.out.println("Agregando control de excepciones:");
+		Flux<String> names3 = Flux.just("Andrés", "Rubén", "", "María", "Roberto", "Diego").doOnNext(name -> {
+			if (name.isEmpty()) {
+				throw new RuntimeErrorException(null, "Names can't be empty.");
+			}
+
+			System.out.println(name);
+		});
+
+		names3.subscribe(name -> log.info(name), name -> log.error(name.getMessage()));
+		System.out.println("\n");
+
 	}
 
 }
