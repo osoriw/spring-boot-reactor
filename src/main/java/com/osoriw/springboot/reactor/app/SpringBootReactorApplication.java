@@ -94,7 +94,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		// Ejemplo 5: transformando los nombres a objetos tipo Usuario:
 		System.out.println("Transformando los nombres a objetos tipo Usuario:");
-		Flux<Usuario> users = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego")
+		Flux<Usuario> users1 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego")
 				.map(name -> new Usuario(name.toUpperCase(), null)).doOnNext(user -> {
 					if (user == null || user.getName().isEmpty()) {
 						throw new RuntimeErrorException(null, "Names can't be empty.");
@@ -103,7 +103,29 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 					System.out.println(user.getName());
 				});
 
-		users.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
+		users1.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
+		
+		// Ejemplo 6: agregando operador filter:
+		System.out.println("Agregando operador filter:");
+		Flux<Usuario> users2 = Flux
+				.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis")
+				.map(name -> new Usuario(name.split(" ")[0].toUpperCase(), name.split(" ")[1].toUpperCase()))
+				.filter(user -> user.getName().toLowerCase().equals("bruce")).doOnNext(user -> {
+					if (user == null || user.getName().isEmpty()) {
+						throw new RuntimeErrorException(null, "Names can't be empty.");
+					}
+
+					System.out.println(user.getName().toLowerCase().concat(" ").concat(user.getLastName().toLowerCase()));
+				});
+
+		users2.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
 
 			@Override
 			public void run() {
