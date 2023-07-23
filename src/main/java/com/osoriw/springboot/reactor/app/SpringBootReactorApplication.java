@@ -1,5 +1,8 @@
 package com.osoriw.springboot.reactor.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.management.RuntimeErrorException;
 
 import org.slf4j.Logger;
@@ -166,8 +169,40 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 			}
 		});
 		System.out.println("\n");
+		
+		// Ejemplo 9: Creando un flujo reactivo a partir de un iterable (List, Array, Stream, Set, etc):
+		System.out.println("EJEMPLO 9: Creando un flujo reactivo a partir de un iterable (List, Array, Stream, Set, etc):");
+		List<String> nombresList = new ArrayList<>();
+		nombresList.add("Andrés Guzman");
+		nombresList.add("Rubén Fulano");
+		nombresList.add("Julio Sultano");
+		nombresList.add("María Mengano");
+		nombresList.add("Roberto Muchilanga");
+		nombresList.add("Diego Burundanga");
+		nombresList.add("Bruce Lee");
+		nombresList.add("Bruce Willis");
 
+		Flux<String> nombresFlx = Flux.fromIterable(nombresList);
+		nombresFlx.map(name -> new Usuario(name.split(" ")[0].toUpperCase(), name.split(" ")[1].toUpperCase()))
+				.filter(user -> user.getName().toLowerCase().equals("bruce")).doOnNext(user -> {
+					if (user == null || user.getName().isEmpty()) {
+						throw new RuntimeErrorException(null, "Names can't be empty.");
+					}
 
+					System.out.println(user.getName().toLowerCase().concat(" ").concat(user.getLastName().toLowerCase()));
+				});
+
+		nombresFlx.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
+
+		
+	
 	}
 
 }
