@@ -134,7 +134,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 		
-		// Ejemplo 6: validando inmutabilidad del flujo:
+		// Ejemplo 7: validando inmutabilidad del flujo:
 		System.out.println("Validando inmutabilidad del flujo:");
 		Flux<String> nombres = Flux.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis");
 				
