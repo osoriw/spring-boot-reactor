@@ -25,7 +25,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		// Ejemplo 1: creando un flujo reactivo
-		System.out.println("Creando un flujo reactivo:");
+		System.out.println("EJEMPLO 1: Creando un flujo reactivo:");
 		Flux<String> names1 = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
 				.doOnNext(name -> System.out.println(name));
 
@@ -33,7 +33,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 
 		// Ejemplo 2: imprimiendo logs en el método subscriber
-		System.out.println("Imprimiendo logs en el método subscriber:");
+		System.out.println("EJEMPLO 2: Imprimiendo logs en el método subscriber:");
 		Flux<String> names2 = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
 				.doOnNext(name -> System.out.println(name));
 
@@ -41,7 +41,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 
 		// Ejemplo 3: agregando control de excepciones
-		System.out.println("Agregando control de excepciones:");
+		System.out.println("EJEMPLO 3: Agregando control de excepciones:");
 		Flux<String> names3 = Flux.just("Andrés", "Rubén", "", "María", "Roberto", "Diego").doOnNext(name -> {
 			if (name.isEmpty()) {
 				throw new RuntimeErrorException(null, "Names can't be empty.");
@@ -54,7 +54,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 
 		// Ejemplo 4: el evento onComplete
-		System.out.println("El evento onComplete:");
+		System.out.println("EJEMPLO 4: El evento onComplete:");
 		Flux<String> names4 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
 			if (name.isEmpty()) {
 				throw new RuntimeErrorException(null, "Names can't be empty.");
@@ -72,9 +72,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 
-		// Ejemplo 4: transformando los nombres a mayúsculas, después del método
+		// Ejemplo 5: transformando los nombres a mayúsculas, después del método
 		// doOnNext:
-		System.out.println("Transformando los nombres a mayúsculas, después del método doOnNext:");
+		System.out.println("EJEMPLO 5: Transformando los nombres a mayúsculas, después del método doOnNext:");
 		Flux<String> names5 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
 			if (name.isEmpty()) {
 				throw new RuntimeErrorException(null, "Names can't be empty.");
@@ -92,8 +92,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 
-		// Ejemplo 5: transformando los nombres a objetos tipo Usuario:
-		System.out.println("Transformando los nombres a objetos tipo Usuario:");
+		// Ejemplo 6: transformando los nombres a objetos tipo Usuario:
+		System.out.println("EJEMPLO 6: Transformando los nombres a objetos tipo Usuario:");
 		Flux<Usuario> users1 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego")
 				.map(name -> new Usuario(name.toUpperCase(), null)).doOnNext(user -> {
 					if (user == null || user.getName().isEmpty()) {
@@ -112,8 +112,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 		
-		// Ejemplo 6: agregando operador filter:
-		System.out.println("Agregando operador filter:");
+		// Ejemplo 7: agregando operador filter:
+		System.out.println("EJEMPLO 7: Agregando operador filter:");
 		Flux<Usuario> users2 = Flux
 				.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis")
 				.map(name -> new Usuario(name.split(" ")[0].toUpperCase(), name.split(" ")[1].toUpperCase()))
@@ -134,8 +134,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 		System.out.println("\n");
 		
-		// Ejemplo 7: validando inmutabilidad del flujo:
-		System.out.println("Validando inmutabilidad del flujo:");
+		// Ejemplo 8: validando inmutabilidad del flujo:
+		System.out.println("EJEMPLO 8: Validando inmutabilidad del flujo:");
 		Flux<String> nombres = Flux.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis");
 				
 		Flux<Usuario> usuarios = nombres.map(name -> new Usuario(name.split(" ")[0].toUpperCase(), name.split(" ")[1].toUpperCase()))
