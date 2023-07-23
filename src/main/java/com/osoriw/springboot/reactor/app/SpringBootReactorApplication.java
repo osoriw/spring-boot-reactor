@@ -27,54 +27,11 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		// Ejemplo 1: creando un flujo reactivo
-		System.out.println("EJEMPLO 1: Creando un flujo reactivo:");
-		Flux<String> names1 = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
-				.doOnNext(name -> System.out.println(name));
-
-		names1.subscribe();
-		System.out.println("\n");
-
-		// Ejemplo 2: imprimiendo logs en el método subscriber
-		System.out.println("EJEMPLO 2: Imprimiendo logs en el método subscriber:");
-		Flux<String> names2 = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
-				.doOnNext(name -> System.out.println(name));
-
-		names2.subscribe(name -> log.info(name));
-		System.out.println("\n");
-
-		// Ejemplo 3: agregando control de excepciones
-		System.out.println("EJEMPLO 3: Agregando control de excepciones:");
-		Flux<String> names3 = Flux.just("Andrés", "Rubén", "", "María", "Roberto", "Diego").doOnNext(name -> {
-			if (name.isEmpty()) {
-				throw new RuntimeErrorException(null, "Names can't be empty.");
-			}
-
-			System.out.println(name);
-		});
-
-		names3.subscribe(name -> log.info(name), name -> log.error(name.getMessage()));
-		System.out.println("\n");
-
-		// Ejemplo 4: el evento onComplete
-		System.out.println("EJEMPLO 4: El evento onComplete:");
-		Flux<String> names4 = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
-			if (name.isEmpty()) {
-				throw new RuntimeErrorException(null, "Names can't be empty.");
-			}
-
-			System.out.println(name);
-		});
-
-		names4.subscribe(name -> log.info(name), name -> log.error(name.getMessage()), new Runnable() {
-
-			@Override
-			public void run() {
-				System.out.println("Flujo completado!!");
-			}
-		});
-		System.out.println("\n");
-
+		creandoFlujoReactivo(); // creando un flujo reactivo
+		imprimiendoLogsEnMetodoSubscriber(); // imprimiendo logs en el método subscriber
+		agregandoControlDeExcepciones();// agregando control de excepciones
+		eventoOnComplete();// el evento onComplete
+		
 		// Ejemplo 5: transformando los nombres a mayúsculas, después del método
 		// doOnNext:
 		System.out.println("EJEMPLO 5: Transformando los nombres a mayúsculas, después del método doOnNext:");
@@ -203,6 +160,57 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		
 	
+	}
+	
+	private void creandoFlujoReactivo() {
+		System.out.println("EJEMPLO 1: Creando un flujo reactivo:");
+		Flux<String> nombres = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
+				.doOnNext(name -> System.out.println(name));
+
+		nombres.subscribe();
+		System.out.println("\n");
+	}
+	
+	private void imprimiendoLogsEnMetodoSubscriber() {
+		System.out.println("EJEMPLO 2: Imprimiendo logs en el método subscriber:");
+		Flux<String> nombres = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
+				.doOnNext(name -> System.out.println(name));
+
+		nombres.subscribe(name -> log.info(name));
+		System.out.println("\n");
+	}
+	
+	private void agregandoControlDeExcepciones() {
+		System.out.println("EJEMPLO 3: Agregando control de excepciones:");
+		Flux<String> nombres = Flux.just("Andrés", "Rubén", "", "María", "Roberto", "Diego").doOnNext(name -> {
+			if (name.isEmpty()) {
+				throw new RuntimeErrorException(null, "Names can't be empty.");
+			}
+			System.out.println(name);
+		});
+
+		nombres.subscribe(name -> log.info(name), name -> log.error(name.getMessage()));
+		System.out.println("\n");
+	}
+	
+	private void eventoOnComplete() {
+		System.out.println("EJEMPLO 4: El evento onComplete:");
+		Flux<String> nombres = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego").doOnNext(name -> {
+			if (name.isEmpty()) {
+				throw new RuntimeErrorException(null, "Names can't be empty.");
+			}
+
+			System.out.println(name);
+		});
+
+		nombres.subscribe(name -> log.info(name), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
 	}
 
 }
