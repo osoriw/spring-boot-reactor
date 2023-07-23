@@ -133,6 +133,40 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 			}
 		});
 		System.out.println("\n");
+		
+		// Ejemplo 6: validando inmutabilidad del flujo:
+		System.out.println("Validando inmutabilidad del flujo:");
+		Flux<String> nombres = Flux.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis");
+				
+		Flux<Usuario> usuarios = nombres.map(name -> new Usuario(name.split(" ")[0].toUpperCase(), name.split(" ")[1].toUpperCase()))
+				.filter(user -> user.getName().toLowerCase().equals("bruce")).doOnNext(user -> {
+					if (user == null || user.getName().isEmpty()) {
+						throw new RuntimeErrorException(null, "Names can't be empty.");
+					}
+
+					System.out.println(user.getName().toLowerCase().concat(" ").concat(user.getLastName().toLowerCase()));
+				});
+
+		System.out.println("Flujo inicial es inmutable, sus datos no cambian:");
+		nombres.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
+		
+		System.out.println("Flujo modificado es diferente del flujo inicial:");
+		usuarios.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Flujo completado!!");
+			}
+		});
+		System.out.println("\n");
+
 
 	}
 
