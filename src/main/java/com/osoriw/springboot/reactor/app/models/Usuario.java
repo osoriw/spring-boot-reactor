@@ -27,4 +27,9 @@ public class Usuario {
 		this.lastName = lastName;
 	}
 
+	@Override
+	public String toString() {
+		return "Usuario [name=" + name + ", lastName=" + lastName + "]";
+	}
+
 }

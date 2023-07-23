@@ -95,16 +95,15 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		// Ejemplo 5: transformando los nombres a objetos tipo Usuario:
 		System.out.println("Transformando los nombres a objetos tipo Usuario:");
 		Flux<Usuario> users = Flux.just("Andrés", "Rubén", "Julio", "María", "Roberto", "Diego")
-				.map(name -> new Usuario(name.toUpperCase(), null))
-				.doOnNext(user -> {
-					if (user.getName().isEmpty()) {
+				.map(name -> new Usuario(name.toUpperCase(), null)).doOnNext(user -> {
+					if (user == null || user.getName().isEmpty()) {
 						throw new RuntimeErrorException(null, "Names can't be empty.");
 					}
 
 					System.out.println(user.getName());
 				});
 
-		users.subscribe(user -> log.info(user.getName()), name -> log.error(name.getMessage()), new Runnable() {
+		users.subscribe(user -> log.info(user.toString()), name -> log.error(name.getMessage()), new Runnable() {
 
 			@Override
 			public void run() {
