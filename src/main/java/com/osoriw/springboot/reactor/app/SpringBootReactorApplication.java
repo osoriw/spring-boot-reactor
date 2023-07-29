@@ -53,6 +53,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				.doOnNext(name -> System.out.println(name));
 
 		nombres.subscribe();
+		
 		System.out.println("\n");
 	}
 	
@@ -62,6 +63,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				.doOnNext(name -> System.out.println(name));
 
 		nombres.subscribe(name -> log.info(name));
+		
 		System.out.println("\n");
 	}
 	
@@ -75,6 +77,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		});
 
 		nombres.subscribe(name -> log.info(name), name -> log.error(name.getMessage()));
+		
 		System.out.println("\n");
 	}
 	
@@ -95,6 +98,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				System.out.println("Flujo completado!!");
 			}
 		});
+		
 		System.out.println("\n");
 	}
 
@@ -105,6 +109,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				});
 
 		users1.subscribe(user -> log.info(user.toString()));
+		
+		System.out.println("\n");
 	}
 	
 	private void flatMapOperator() {
@@ -122,16 +128,17 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		Flux.fromIterable(nombresList)
 				.flatMap(nombre -> Mono.just(new Usuario(nombre.split(" ")[0], nombre.split(" ")[1])))
 				.subscribe(user -> log.info(user.toString()));
-
+		
 		System.out.println("\n");
-
 	}
 	
 	private void filterMapOperator() {
 		System.out.println("EJEMPLO 7: Agregando operador filter:");
-		Flux.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga",
-				"Diego Burundanga", "Bruce Lee", "Bruce Willis").filter(nombre -> nombre.split(" ")[0].equals("bruce"))
-				.subscribe(nombre -> log.info(nombre.toString()));
+		Flux.just("Andrés Guzman", "Rubén Fulano", "Julio Sultano", "María Mengano", "Roberto Muchilanga", "Diego Burundanga", "Bruce Lee", "Bruce Willis")
+		.filter(nombre -> nombre.split(" ")[0].toLowerCase().equals("bruce"))
+		.subscribe(nombre -> log.info(nombre.toString()));
+		
+		System.out.println("\n");
 	}
 	
 	private void inmutableObservables() {
@@ -148,6 +155,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		System.out.println("Flujo modificado es diferente del flujo inicial:");
 		usuarios.subscribe(user -> log.info(user.toString()));
+		
 		System.out.println("\n");
 	}
 		
