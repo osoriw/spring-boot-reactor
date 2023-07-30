@@ -28,7 +28,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		creatingAReactiveStream(); 
+		/*creatingAReactiveStream(); 
 		
 		printingLogsInSubscribeMethod();
 		
@@ -46,7 +46,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		creatingAReactiveFlowFromIterable();
 		
-		listToString();
+		listToString();*/
+		
+		fluxToMono();
 	}
 	
 	private void creatingAReactiveStream() {
@@ -197,6 +199,29 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				.map(usuario -> usuario.getName().concat(" ").concat(usuario.getLastName()))
 				.flatMap(nombres -> Mono.just(nombres.split(" ")[0].toUpperCase().concat(" ").concat(nombres.split(" ")[1].toUpperCase())))
 				.subscribe(nombre -> log.info(nombre));
+		
+		System.out.println("\n");
+
+	}
+	
+	private void fluxToMono() {
+		System.out.println("EJEMPLO 11: Convirtiendo un flujo observable Flux a Mono, con el método collectList(), Flux<Usuarios> -> Mono<List<Usuario>>:");
+		List<Usuario> usuariosList = new ArrayList<>();
+		usuariosList.add(new Usuario("Andrés", "Guzman"));
+		usuariosList.add(new Usuario("Rubén", "Fulano"));
+		usuariosList.add(new Usuario("Julio", "Sultano"));
+		usuariosList.add(new Usuario("María", "Mengano"));
+		usuariosList.add(new Usuario("María", "Muchilanga"));
+		usuariosList.add(new Usuario("Diego", "Burundanga"));
+		usuariosList.add(new Usuario("Bruce", "Lee"));
+		usuariosList.add(new Usuario("Bruce", "Willis"));
+
+		//collectList transforma el Flux de usuarios en un Mono de una lista de usuarios Flux<Usuarios> -> Mono<List<Usuario>>
+		Mono<List<Usuario>> usuarioFlx = Flux.fromIterable(usuariosList).collectList();
+		usuarioFlx.subscribe(listaUsuarios -> log.info(listaUsuarios.toString()));
+		
+		System.out.println("Recorrer el Mono<List<Usuario>> con un forEach:");
+		usuarioFlx.subscribe(listaUsuarios -> listaUsuarios.forEach(System.out::println));
 		
 		System.out.println("\n");
 
