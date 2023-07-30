@@ -45,6 +45,8 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		inmutableObservables();
 		
 		creatingAReactiveFlowFromIterable();
+		
+		listToString();
 	}
 	
 	private void creatingAReactiveStream() {
@@ -177,6 +179,29 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		nombresFlx.subscribe(user -> log.info(user.toString()));
 		System.out.println("\n");
 	}
+	
+	
+	private void listToString() {
+		System.out.println("EJEMPLO 10: Convirtiendo una lista de usuarios a un flujo de Strings con los operadores map y flatmap:");
+		List<Usuario> usuariosList = new ArrayList<>();
+		usuariosList.add(new Usuario("Andrés", "Guzman"));
+		usuariosList.add(new Usuario("Rubén", "Fulano"));
+		usuariosList.add(new Usuario("Julio", "Sultano"));
+		usuariosList.add(new Usuario("María", "Mengano"));
+		usuariosList.add(new Usuario("María", "Muchilanga"));
+		usuariosList.add(new Usuario("Diego", "Burundanga"));
+		usuariosList.add(new Usuario("Bruce", "Lee"));
+		usuariosList.add(new Usuario("Bruce", "Willis"));
+
+		Flux.fromIterable(usuariosList)
+				.map(usuario -> usuario.getName().concat(" ").concat(usuario.getLastName()))
+				.flatMap(nombres -> Mono.just(nombres.split(" ")[0].toUpperCase().concat(" ").concat(nombres.split(" ")[1].toUpperCase())))
+				.subscribe(nombre -> log.info(nombre));
+		
+		System.out.println("\n");
+
+	}
+	
 	
 	
 }
