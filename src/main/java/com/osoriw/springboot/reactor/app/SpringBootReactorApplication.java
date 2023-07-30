@@ -30,7 +30,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		creatingAReactiveStream();
+		/*creatingAReactiveStream();
 
 		printingLogsInSubscribeMethod();
 
@@ -56,7 +56,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		usuarioComentariosZipWithExampleWay1();
 		
-		usuarioComentariosZipWithExampleWay2();
+		usuarioComentariosZipWithExampleWay2();*/
 
 		zipWithRangeExample();
 		
@@ -314,7 +314,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	
 	private void zipWithRangeExample() {
 		System.out.println("EJEMPLO 14: otro ejemplo de combinación  de 2 flujos con el operador zipWith:");
-		Flux<Integer> range = Flux.just(1, 2, 3, 4);
+		Flux<Integer> range = Flux.range(1, 10);
 
 		range.map(i -> (i * 2)).zipWith(range, (firtsFlow, secondFlow) -> String.format("Primer Flux: %d, Segundo Flux: %d ", firtsFlow, secondFlow))
 				.subscribe(texto -> log.info(texto));
