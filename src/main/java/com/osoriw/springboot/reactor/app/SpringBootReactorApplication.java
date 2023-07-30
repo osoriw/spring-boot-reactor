@@ -231,9 +231,10 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 	private void usuarioComentariosFlatmapExample() {
 		System.out.println("EJEMPLO 12: Combinando 2 flujos con el operador flatMap:");
-		// crear un nuevo flujo de tipo Mono, usando fromCallable
+		// crear un nuevo flujo usuarioMono, usando fromCallable
 		Mono<Usuario> usuarioMono = Mono.fromCallable(() -> new Usuario("Alejandro", "Rodriguez"));
 
+		// crear un nuevo flujo comentariosUsuarioMono, usando fromCallable
 		Mono<Comentarios> comentariosUsuarioMono = Mono.fromCallable(() -> {
 			Comentarios comentarios = new Comentarios();
 			comentarios.setComentario("Comentario 1");
