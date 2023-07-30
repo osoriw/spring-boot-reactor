@@ -30,7 +30,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		creatingAReactiveStream();
+		/*creatingAReactiveStream();
 
 		printingLogsInSubscribeMethod();
 
@@ -52,7 +52,10 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		fluxToMono();
 
-		usuarioComentariosFlatmapExample();
+		usuarioComentariosFlatmapExample();*/
+		
+		usuarioComentariosZipWithExampleWay1();
+		usuarioComentariosZipWithExampleWay2();
 
 	}
 
@@ -251,5 +254,59 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 		System.out.println("\n");
 	}
+	
+	private void usuarioComentariosZipWithExampleWay1() {
+		System.out.println("EJEMPLO 13: Combinando 2 flujos con el operador zipWith forma 1:");
+		// crear un nuevo flujo usuarioMono, usando fromCallable
+		Mono<Usuario> usuarioMono = Mono.fromCallable(() -> new Usuario("Alejandro", "Rodriguez"));
+
+		// crear un nuevo flujo comentariosUsuarioMono, usando fromCallable
+		Mono<Comentarios> comentariosUsuarioMono = Mono.fromCallable(() -> {
+			Comentarios comentarios = new Comentarios();
+			comentarios.setComentario("Comentario 1");
+			comentarios.setComentario("Comentario 2");
+			comentarios.setComentario("Comentario 3");
+			comentarios.setComentario("Comentario 4");
+
+			return comentarios;
+
+		});
+
+		Mono<UsuarioComentarios> usuarioComentariosMono = usuarioMono.zipWith(comentariosUsuarioMono,
+				(usuario, comentario) -> new UsuarioComentarios(usuario, comentario));
+
+		usuarioComentariosMono.subscribe(uc -> log.info(uc.toString().toString()));
+
+		System.out.println("\n");
+	}
+	
+	private void usuarioComentariosZipWithExampleWay2() {
+		System.out.println("EJEMPLO 13: Combinando 2 flujos con el operador zipWith forma 2:");
+		// crear un nuevo flujo usuarioMono, usando fromCallable
+		Mono<Usuario> usuarioMono = Mono.fromCallable(() -> new Usuario("Alejandro", "Rodriguez"));
+
+		// crear un nuevo flujo comentariosUsuarioMono, usando fromCallable
+		Mono<Comentarios> comentariosUsuarioMono = Mono.fromCallable(() -> {
+			Comentarios comentarios = new Comentarios();
+			comentarios.setComentario("Comentario 1");
+			comentarios.setComentario("Comentario 2");
+			comentarios.setComentario("Comentario 3");
+			comentarios.setComentario("Comentario 4");
+
+			return comentarios;
+
+		});
+
+		Mono<UsuarioComentarios> usuarioComentariosMono = usuarioMono.zipWith(comentariosUsuarioMono).map(tuple -> {
+			Usuario usuario = tuple.getT1();
+			Comentarios comentarios = tuple.getT2();
+			return new UsuarioComentarios(usuario, comentarios);
+		});
+
+		usuarioComentariosMono.subscribe(uc -> log.info(uc.toString()));
+		
+		System.out.println("\n");
+	}
+	
 
 }
