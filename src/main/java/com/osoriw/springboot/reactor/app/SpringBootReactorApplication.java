@@ -358,7 +358,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				.doOnNext(i -> log.info(i.toString()));
 
 		System.out.println("Iniciando el bloqueo del hilo principal...");
-		rango.blockLast(); // se bloquea el hilo principal
+		// se bloquea el hilo principal 
+		// RECORDAR: esto no debe usarse ebn un contexto real, porque puede generar cuellos de botella.
+		rango.blockLast();
 		System.out.println("Finalizando el bloqueo del hilo principal...");
 
 		System.out.println("\n");
