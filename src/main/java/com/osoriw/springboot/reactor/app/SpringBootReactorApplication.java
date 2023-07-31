@@ -31,7 +31,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		/*creatingAReactiveStream();
+		creatingAReactiveStream();
 
 		printingLogsInSubscribeMethod();
 
@@ -59,10 +59,12 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		usuarioComentariosZipWithExampleWay2();
 
-		zipWithRangeExample();*/
+		zipWithRangeExample();
 		
 		intervalExample();
 		
+		delayElementsExample();
+				
 	}
 
 	private void creatingAReactiveStream() {
@@ -345,6 +347,18 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				 * bloqueantes).
 				 */
 				.blockLast(); // se bloquea el hilo principal
+		System.out.println("Finalizando el bloqueo del hilo principal...");
+
+		System.out.println("\n");
+	}
+	
+	private void delayElementsExample() throws InterruptedException {
+		Flux<Integer> rango = Flux.range(1, 12)
+				.delayElements(Duration.ofSeconds(1))
+				.doOnNext(i -> log.info(i.toString()));
+
+		System.out.println("Iniciando el bloqueo del hilo principal...");
+		rango.blockLast(); // se bloquea el hilo principal
 		System.out.println("Finalizando el bloqueo del hilo principal...");
 
 		System.out.println("\n");
