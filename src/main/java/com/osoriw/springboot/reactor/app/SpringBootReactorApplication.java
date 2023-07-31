@@ -1,5 +1,6 @@
 package com.osoriw.springboot.reactor.app;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		creatingAReactiveStream();
+		/*creatingAReactiveStream();
 
 		printingLogsInSubscribeMethod();
 
@@ -58,7 +59,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		usuarioComentariosZipWithExampleWay2();
 
-		zipWithRangeExample();
+		zipWithRangeExample();*/
+		
+		intervalExample();
 		
 	}
 
@@ -311,13 +314,38 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 	}
 	
-	
 	private void zipWithRangeExample() {
 		System.out.println("EJEMPLO 14: otro ejemplo de combinación  de 2 flujos con el operador zipWith:");
 		Flux<Integer> range = Flux.range(1, 10);
 
 		range.map(i -> (i * 2)).zipWith(range, (firtsFlow, secondFlow) -> String.format("Primer Flux: %d, Segundo Flux: %d ", firtsFlow, secondFlow))
 				.subscribe(texto -> log.info(texto));
+
+		System.out.println("\n");
+	}
+
+	private void intervalExample() throws InterruptedException {
+		Flux<Integer> rango = Flux.range(1, 12);
+		Flux<Long> retraso = Flux.interval(Duration.ofSeconds(1));
+
+		System.out.println("Iniciando el bloqueo del hilo principal...");
+		rango.zipWith(retraso, (ra, re) -> ra).doOnNext(i -> log.info(i.toString()))
+				/**
+				 * Por defecto, no es posible ver la impresión de los valores del rango, debido
+				 * a la naturaleza no bloqueante del flujo reactivo, por lo cual el proceso de
+				 * imprimir cada uno de valores del rango con un delay de un 1 segundo, se
+				 * ejecuta en segundo plano y como la ejecución de hilo principal se demora mu
+				 * poco tiempo, la ejecución de este, terminará mucho antes de que empiece
+				 * siquiera a emitir el primer valor del rango. Por esta razón y por efectos de
+				 * poder mostrar la impresión de cada de los valores, se debe bloquear el hilo
+				 * principal, una opción para hacer esto es invocando el método blockLast()
+				 * (ojo!, en escenario real, no se debe bloquear un flujo reactivo pues esto no
+				 * tiene sentido, ya que el propósito de la programación reactiva es
+				 * precisamente que se puedan correr procesos en hilos independientes no
+				 * bloqueantes).
+				 */
+				.blockLast(); // se bloquea el hilo principal
+		System.out.println("Finalizando el bloqueo del hilo principal...");
 
 		System.out.println("\n");
 	}
