@@ -326,7 +326,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 	}
 
-	private void intervalExample() throws InterruptedException {
+	private void intervalExample() {
 		Flux<Integer> rango = Flux.range(1, 12);
 		Flux<Long> retraso = Flux.interval(Duration.ofSeconds(1));
 
@@ -352,7 +352,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		System.out.println("\n");
 	}
 	
-	private void delayElementsExample() throws InterruptedException {
+	private void delayElementsExample() {
 		Flux<Integer> rango = Flux.range(1, 12)
 				.delayElements(Duration.ofSeconds(1))
 				.doOnNext(i -> log.info(i.toString()));
