@@ -30,7 +30,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		/*creatingAReactiveStream();
+		creatingAReactiveStream();
 
 		printingLogsInSubscribeMethod();
 
@@ -56,7 +56,7 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		usuarioComentariosZipWithExampleWay1();
 		
-		usuarioComentariosZipWithExampleWay2();*/
+		usuarioComentariosZipWithExampleWay2();
 
 		zipWithRangeExample();
 		
