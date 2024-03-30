@@ -31,9 +31,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		creatingAReactiveStream();
+		createReactiveStream();
 
-		printingLogsInSubscribeMethod();
+		/*printingLogsInSubscribeMethod();
 
 		addingExceptionaManagement();
 
@@ -63,17 +63,15 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 		
 		intervalExample();
 		
-		delayElementsExample();
+		delayElementsExample();*/
 				
 	}
 
-	private void creatingAReactiveStream() {
+	private void createReactiveStream() {
 		System.out.println("EJEMPLO 1: Creando un flujo reactivo:");
-		Flux<String> nombres = Flux.just("Andrés", "Rubén", "María", "Roberto", "Diego")
-				.doOnNext(name -> System.out.println(name));
-
-		nombres.subscribe();
-
+		Flux<String> names = Flux.just("Andres", "Wilson", "Pedro", "Maria") // crear un flujo reactivo de strings
+				.doOnNext(System.out::println); // doOnNext permite procesar cada elemento emitido desde el flujo
+		names.subscribe(); // se debe subscribir al flujo reactivo, de lo contrario el flujo no se iniciará
 		System.out.println("\n");
 	}
 
