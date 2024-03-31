@@ -13,18 +13,32 @@ class SpringBootReactorApplicationTests {
     }
 
     @Test
-    void handlingAnFluxExceptionTest() {
+    void throwingAnExceptionTest() {
         //given
 
         //when
         ReactiveStreamException main = new ReactiveStreamException();
-        var value = main.handlingAFluxException();
+        var value = main.throwingAnException();
 
         //then
         StepVerifier.create(value)
                 .expectNext("A", "B", "C")
                 .expectError(RuntimeException.class)
                 .verify();
+    }
+
+    @Test
+    void catchingAnExceptionWithOnErrorReturnTest() {
+        //given
+
+        //when
+        ReactiveStreamException main = new ReactiveStreamException();
+        var value = main.catchingAnExceptionWithOnErrorReturn();
+
+        //then
+        StepVerifier.create(value)
+                .expectNext("A", "B", "C", "D")
+                .verifyComplete();
     }
 
 
