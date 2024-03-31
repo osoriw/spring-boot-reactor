@@ -18,7 +18,7 @@ class SpringBootReactorApplicationTests {
 
         //when
         ReactiveStreamException main = new ReactiveStreamException();
-        var value = main.handlingnFluxException();
+        var value = main.handlingAFluxException();
 
         //then
         StepVerifier.create(value)
