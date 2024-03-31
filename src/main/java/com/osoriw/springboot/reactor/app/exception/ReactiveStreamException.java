@@ -17,7 +17,7 @@ public class ReactiveStreamException {
     /**
      * Return a default value when an exception occurs
      */
-    public Flux<String> catchingAnExceptionWithOnErrorReturn() {
+    public Flux<String> handlingAnExceptionWithOnErrorReturn() {
         return Flux.just("A", "B", "C")
                 .concatWith(Flux.error(new RuntimeException("An exception has occurred")))
                 .onErrorReturn("D") //Note that this method does not have visibility of the exception. it just catches the exception and returns a default value when the exception occurs

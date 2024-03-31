@@ -28,12 +28,12 @@ class SpringBootReactorApplicationTests {
     }
 
     @Test
-    void catchingAnExceptionWithOnErrorReturnTest() {
+    void handlingAnExceptionWithOnErrorReturnTest() {
         //given
 
         //when
         ReactiveStreamException main = new ReactiveStreamException();
-        var value = main.catchingAnExceptionWithOnErrorReturn();
+        var value = main.handlingAnExceptionWithOnErrorReturn();
 
         //then
         StepVerifier.create(value)
